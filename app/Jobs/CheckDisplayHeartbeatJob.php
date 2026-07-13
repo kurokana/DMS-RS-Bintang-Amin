@@ -34,12 +34,16 @@ class CheckDisplayHeartbeatJob implements ShouldQueue
             $device->update(['status' => 'offline']);
 
             // Broadcast status change so Office Admin Panel can react
-            event(new DeviceStatusChanged(
-                $device->display_id,
-                $device->name,
-                'offline',
-                $device->last_heartbeat_at?->toIso8601String(),
-            ));
+            try {
+                event(new DeviceStatusChanged(
+                    $device->display_id,
+                    $device->name,
+                    'offline',
+                    $device->last_heartbeat_at?->toIso8601String(),
+                ));
+            } catch (\Exception $e) {
+                Log::warning("Failed to broadcast DeviceStatusChanged for [{$device->display_id}]: " . $e->getMessage());
+            }
 
             Log::info("Display [{$device->display_id}] marked offline due to heartbeat timeout.");
         }

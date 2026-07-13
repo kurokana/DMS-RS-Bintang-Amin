@@ -23,6 +23,7 @@ Route::prefix('v1')->group(function () {
         // displays
         Route::get('/displays', [DisplayController::class, 'index']);
         Route::post('/displays', [DisplayController::class, 'store'])->middleware('role:admin');
+        Route::put('/displays/{id}', [DisplayController::class, 'update'])->middleware('role:admin');
 
         // mappings
         Route::put('/displays/{id}/mapping', [MappingController::class, 'update'])->middleware('role:admin,operator');

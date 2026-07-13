@@ -36,6 +36,19 @@ class DisplayDeviceService
     }
 
     /**
+     * Update an existing display device.
+     */
+    public function updateDevice(string $displayId, array $data): DisplayDevice
+    {
+        $device = DisplayDevice::where('display_id', $displayId)->firstOrFail();
+        $device->update([
+            'name' => $data['name'],
+        ]);
+        
+        return $device;
+    }
+
+    /**
      * Update display heartbeat status to online.
      */
     public function recordHeartbeat(string $displayId): DisplayDevice

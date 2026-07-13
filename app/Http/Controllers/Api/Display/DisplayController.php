@@ -59,4 +59,32 @@ class DisplayController extends Controller
             ], 409);
         }
     }
+    /**
+     * Update an existing display device.
+     */
+    public function update(Request $request, string $id): JsonResponse
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $device = collect($this->deviceService->getAllDevices())->firstWhere('display_id', $id);
+        
+        if (!$device) {
+            return response()->json([
+                'success' => false,
+                'error' => [
+                    'code' => 'NOT_FOUND',
+                    'message' => 'Display device not found.'
+                ]
+            ], 404);
+        }
+
+        $updatedDevice = $this->deviceService->updateDevice($id, $validated);
+
+        return response()->json([
+            'success' => true,
+            'data' => $updatedDevice
+        ]);
+    }
 }
