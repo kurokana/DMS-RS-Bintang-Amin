@@ -29,6 +29,8 @@ class DisplayMappingService
                     'target_id' => ['Kamar operasi tidak ditemukan.'],
                 ]);
             }
+        } elseif ($targetType === 'ward_summary') {
+            // No need to validate target_id for ward_summary, usually 'all'
         } else {
             throw ValidationException::withMessages([
                 'target_type' => ['Target type tidak valid.'],
@@ -46,7 +48,9 @@ class DisplayMappingService
         );
 
         // Load relations for payload
-        $mapping->load('target');
+        if (in_array($targetType, ['ward_class', 'operating_room'])) {
+            $mapping->load('target');
+        }
 
         // 3. Broadcast the MappingUpdated event
         event(new DisplayMappingUpdated($device->display_id, [

@@ -13,12 +13,12 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             \App\Contracts\BpjsWardAdapterInterface::class,
-            \App\Adapters\FakeBpjsWardAdapter::class
+            \App\Adapters\OfficeBpjsWardAdapter::class
         );
 
         $this->app->bind(
             \App\Contracts\BpjsOperatingRoomAdapterInterface::class,
-            \App\Adapters\FakeBpjsOperatingRoomAdapter::class
+            \App\Adapters\OfficeBpjsOperatingRoomAdapter::class
         );
     }
 
@@ -30,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
         \Illuminate\Database\Eloquent\Relations\Relation::morphMap([
             'ward_class' => \App\Models\WardClass::class,
             'operating_room' => \App\Models\OperatingRoom::class,
+            'ward_summary' => \App\Models\WardClass::class, // Dummy map to prevent MorphTo crash on eager load
         ]);
     }
 }

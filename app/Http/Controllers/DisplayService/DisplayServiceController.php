@@ -97,6 +97,23 @@ class DisplayServiceController extends Controller
                     'synced_at' => $room->synced_at?->toIso8601String(),
                 ];
             }
+        } elseif ($mapping->target_type === 'ward_summary') {
+            $wards = WardClass::with(['currentAvailability'])->get();
+            $summaryData = [];
+            
+            foreach ($wards as $wardClass) {
+                $availability = $wardClass->currentAvailability;
+                $summaryData[] = [
+                    'bpjs_class_code' => $wardClass->bpjs_class_code,
+                    'class_name' => $wardClass->name,
+                    'bed_total' => $availability?->bed_total ?? 0,
+                    'bed_occupied' => $availability?->bed_occupied ?? 0,
+                    'bed_available' => $availability?->bed_available ?? 0,
+                    'synced_at' => $wardClass->synced_at?->toIso8601String(),
+                ];
+            }
+
+            $stateData['content'] = $summaryData;
         }
 
         return response()->json([
