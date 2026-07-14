@@ -7,6 +7,7 @@ use App\Models\DisplayDevice;
 use App\Models\DisplayMapping;
 use App\Models\OperatingRoom;
 use App\Models\WardClass;
+use App\Models\InpatientRoom;
 use Illuminate\Validation\ValidationException;
 
 class DisplayMappingService
@@ -29,6 +30,12 @@ class DisplayMappingService
                     'target_id' => ['Kamar operasi tidak ditemukan.'],
                 ]);
             }
+        } elseif ($targetType === 'inpatient_room') {
+            if (!InpatientRoom::where('id', $targetId)->exists()) {
+                throw ValidationException::withMessages([
+                    'target_id' => ['Ruangan rawat inap tidak ditemukan.'],
+                ]);
+            }
         } elseif ($targetType === 'ward_summary') {
             // No need to validate target_id for ward_summary, usually 'all'
         } else {
@@ -48,7 +55,7 @@ class DisplayMappingService
         );
 
         // Load relations for payload
-        if (in_array($targetType, ['ward_class', 'operating_room'])) {
+        if (in_array($targetType, ['ward_class', 'operating_room', 'inpatient_room'])) {
             $mapping->load('target');
         }
 

@@ -7,6 +7,7 @@ use App\Models\DisplayDevice;
 use App\Models\OperatingRoom;
 use App\Models\SurgerySchedule;
 use App\Models\WardClass;
+use App\Models\InpatientRoom;
 use App\Services\DisplayDeviceService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -59,6 +60,7 @@ class DisplayServiceController extends Controller
             'name' => $device->name,
             'mapped' => true,
             'target_type' => $mapping->target_type,
+            'target_id' => $mapping->target_id,
         ];
 
         if ($mapping->target_type === 'ward_class') {
@@ -114,6 +116,20 @@ class DisplayServiceController extends Controller
             }
 
             $stateData['content'] = $summaryData;
+        } elseif ($mapping->target_type === 'inpatient_room') {
+            $inpatientRoom = InpatientRoom::find($mapping->target_id);
+            if ($inpatientRoom) {
+                $stateData['content'] = [
+                    'room_code' => $inpatientRoom->room_code,
+                    'name' => $inpatientRoom->name,
+                    'floor' => $inpatientRoom->floor,
+                    'building' => $inpatientRoom->building,
+                    'bed_total' => $inpatientRoom->bed_total,
+                    'bed_occupied' => $inpatientRoom->bed_occupied,
+                    'bed_available' => $inpatientRoom->bed_available,
+                    'updated_at' => $inpatientRoom->updated_at?->toIso8601String(),
+                ];
+            }
         }
 
         return response()->json([
