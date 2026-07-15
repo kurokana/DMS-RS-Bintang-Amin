@@ -32,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
             'operating_room' => \App\Models\OperatingRoom::class,
             'ward_summary' => \App\Models\WardClass::class, // Dummy map to prevent MorphTo crash on eager load
             'inpatient_room' => \App\Models\InpatientRoom::class,
+            'polyclinic' => \App\Models\Polyclinic::class,
         ]);
     }
 }

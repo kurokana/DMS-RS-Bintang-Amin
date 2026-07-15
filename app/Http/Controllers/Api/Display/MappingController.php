@@ -27,7 +27,7 @@ class MappingController extends Controller
 
         try {
             $validated = $request->validate([
-                'target_type' => 'required|string|in:ward_class,operating_room,ward_summary,inpatient_room',
+                'target_type' => 'required|string|in:ward_class,operating_room,ward_summary,inpatient_room,polyclinic',
                 'target_id' => 'required|string',
             ]);
 

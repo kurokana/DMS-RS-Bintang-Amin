@@ -8,6 +8,9 @@ use App\Http\Controllers\Api\Display\MappingController;
 use App\Http\Controllers\Api\Display\MonitoringController;
 use App\Http\Controllers\Api\Display\UtilityController;
 use App\Http\Controllers\Api\Display\InpatientRoomController;
+use App\Http\Controllers\Api\Polyclinic\PolyclinicController;
+use App\Http\Controllers\Api\Polyclinic\PolyclinicDoctorController;
+use App\Http\Controllers\Api\Polyclinic\PolyclinicQueueController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,5 +44,14 @@ Route::prefix('v1')->group(function () {
 
         // inpatient rooms management (CRUD)
         Route::apiResource('inpatient-rooms', InpatientRoomController::class);
+
+        // polyclinics
+        Route::apiResource('polyclinics', PolyclinicController::class);
+        Route::apiResource('polyclinics.doctors', PolyclinicDoctorController::class);
+        Route::get('/polyclinics/{polyId}/queue', [PolyclinicQueueController::class, 'index']);
+        Route::post('/polyclinics/{polyId}/queue', [PolyclinicQueueController::class, 'store']);
+        Route::put('/polyclinics/{polyId}/queue/{id}/status', [PolyclinicQueueController::class, 'updateStatus']);
+        Route::post('/polyclinics/{polyId}/queue/{id}/requeue', [PolyclinicQueueController::class, 'requeue']);
+        Route::delete('/polyclinics/{polyId}/queue/{id}', [PolyclinicQueueController::class, 'destroy']);
     });
 });

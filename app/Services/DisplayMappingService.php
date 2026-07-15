@@ -8,6 +8,7 @@ use App\Models\DisplayMapping;
 use App\Models\OperatingRoom;
 use App\Models\WardClass;
 use App\Models\InpatientRoom;
+use App\Models\Polyclinic;
 use Illuminate\Validation\ValidationException;
 
 class DisplayMappingService
@@ -38,6 +39,12 @@ class DisplayMappingService
             }
         } elseif ($targetType === 'ward_summary') {
             // No need to validate target_id for ward_summary, usually 'all'
+        } elseif ($targetType === 'polyclinic') {
+            if (!Polyclinic::where('id', $targetId)->exists()) {
+                throw ValidationException::withMessages([
+                    'target_id' => ['Poliklinik tidak ditemukan.'],
+                ]);
+            }
         } else {
             throw ValidationException::withMessages([
                 'target_type' => ['Target type tidak valid.'],

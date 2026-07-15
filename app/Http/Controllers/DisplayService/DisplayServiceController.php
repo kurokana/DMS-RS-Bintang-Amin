@@ -8,6 +8,9 @@ use App\Models\OperatingRoom;
 use App\Models\SurgerySchedule;
 use App\Models\WardClass;
 use App\Models\InpatientRoom;
+use App\Models\Polyclinic;
+use App\Models\PolyclinicDoctor;
+use App\Models\PolyclinicQueue;
 use App\Services\DisplayDeviceService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -128,6 +131,30 @@ class DisplayServiceController extends Controller
                     'bed_occupied' => $inpatientRoom->bed_occupied,
                     'bed_available' => $inpatientRoom->bed_available,
                     'updated_at' => $inpatientRoom->updated_at?->toIso8601String(),
+                ];
+            }
+        } elseif ($mapping->target_type === 'polyclinic') {
+            $polyclinic = Polyclinic::with([
+                'doctors' => fn($q) => $q->where('is_active', true)->orderBy('sort_order'),
+                'doctors.todayQueue',
+            ])->find($mapping->target_id);
+
+            if ($polyclinic) {
+                $stateData['content'] = [
+                    'polyclinic_code' => $polyclinic->code,
+                    'polyclinic_name' => $polyclinic->name,
+                    'doctors' => $polyclinic->doctors->map(fn(PolyclinicDoctor $doc) => [
+                        'id' => $doc->id,
+                        'name' => $doc->name,
+                        'photo_url' => $doc->photo_url,
+                        'specialty' => $doc->specialty,
+                        'queue' => $doc->todayQueue->map(fn(PolyclinicQueue $q) => [
+                            'queue_number' => $q->queue_number,
+                            'patient_name' => $q->patient_name, // Nama lengkap, TIDAK di-mask
+                            'status' => $q->status,
+                            'called_at' => $q->called_at?->toIso8601String(),
+                        ])->toArray(),
+                    ])->toArray(),
                 ];
             }
         }
