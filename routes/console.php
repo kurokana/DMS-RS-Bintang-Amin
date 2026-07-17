@@ -17,6 +17,6 @@ use App\Jobs\CheckDisplayHeartbeatJob;
 Schedule::job(PollBpjsWardJob::class)->everyTenSeconds();
 Schedule::job(PollBpjsOperatingRoomJob::class)->everyTenSeconds();
 
-// Check display heartbeat every minute
-Schedule::job(CheckDisplayHeartbeatJob::class)->everyMinute();
+// Check display heartbeat every 10 seconds
+Schedule::job(CheckDisplayHeartbeatJob::class)->everyTenSeconds();
 

@@ -11,17 +11,17 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
-class CheckDisplayHeartbeatJob implements ShouldQueue
+class CheckDisplayHeartbeatJob
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, SerializesModels;
 
     /**
      * Execute the job.
      */
     public function handle(): void
     {
-        // Find displays that haven't sent a heartbeat in the last 60 seconds
-        $offlineThreshold = now()->subSeconds(60);
+        // Find displays that haven't sent a heartbeat in the last 30 seconds
+        $offlineThreshold = now()->subSeconds(30);
 
         $timedOutDevices = DisplayDevice::where('status', 'online')
             ->where(function ($query) use ($offlineThreshold) {
