@@ -95,7 +95,7 @@ class PolyclinicService
         $validTransitions = [
             'menunggu' => ['dilayani', 'terlewat'],
             'dilayani' => ['selesai'],
-            'terlewat' => ['menunggu'], // only via requeue
+            'terlewat' => ['menunggu', 'dilayani'], 
             'selesai' => [],
         ];
 

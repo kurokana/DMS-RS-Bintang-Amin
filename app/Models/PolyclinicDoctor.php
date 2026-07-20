@@ -50,6 +50,7 @@ class PolyclinicDoctor extends Model
     {
         return $this->hasMany(PolyclinicQueue::class, 'doctor_id')
             ->where('queue_date', today())
+            ->orderByRaw("CASE WHEN status = 'terlewat' THEN 1 ELSE 0 END")
             ->orderBy('queue_number');
     }
 

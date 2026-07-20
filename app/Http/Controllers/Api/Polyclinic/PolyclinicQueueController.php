@@ -33,6 +33,7 @@ class PolyclinicQueueController extends Controller
         }
 
         $query = PolyclinicQueue::where('polyclinic_id', $polyId)
+            ->orderByRaw("CASE WHEN status = 'terlewat' THEN 1 ELSE 0 END")
             ->orderBy('queue_number');
 
         // Filter by doctor
