@@ -22,6 +22,14 @@ class InpatientRoomSeeder extends Seeder
                 'bed_total' => 1,
                 'bed_occupied' => 1,
                 'bed_available' => 0,
+                'patients' => json_encode([
+                    [
+                        'bed_number' => '01',
+                        'patient_name' => 'Bpk. Ahmad Subagyo',
+                        'doctor_name' => 'dr. Bambang P, Sp.PD',
+                        'status' => 'terisi',
+                    ]
+                ]),
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -34,6 +42,14 @@ class InpatientRoomSeeder extends Seeder
                 'bed_total' => 2,
                 'bed_occupied' => 1,
                 'bed_available' => 1,
+                'patients' => json_encode([
+                    [
+                        'bed_number' => '01',
+                        'patient_name' => 'Tn. Budi Santoso',
+                        'doctor_name' => 'dr. Bambang P, Sp.PD',
+                        'status' => 'terisi',
+                    ]
+                ]),
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -46,6 +62,20 @@ class InpatientRoomSeeder extends Seeder
                 'bed_total' => 4,
                 'bed_occupied' => 2,
                 'bed_available' => 2,
+                'patients' => json_encode([
+                    [
+                        'bed_number' => '01',
+                        'patient_name' => 'Ny. Siti Aminah',
+                        'doctor_name' => 'dr. Hendra S, Sp.B',
+                        'status' => 'terisi',
+                    ],
+                    [
+                        'bed_number' => '02',
+                        'patient_name' => 'An. Rizky Pratama',
+                        'doctor_name' => 'dr. Ratna W, Sp.A',
+                        'status' => 'terisi',
+                    ]
+                ]),
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -58,6 +88,14 @@ class InpatientRoomSeeder extends Seeder
                 'bed_total' => 6,
                 'bed_occupied' => 6,
                 'bed_available' => 0,
+                'patients' => json_encode([
+                    ['bed_number' => '01', 'patient_name' => 'Tn. Budi Santoso', 'doctor_name' => 'dr. Bambang P, Sp.PD', 'status' => 'terisi'],
+                    ['bed_number' => '02', 'patient_name' => 'Ny. Siti Aminah', 'doctor_name' => 'dr. Hendra S, Sp.B', 'status' => 'terisi'],
+                    ['bed_number' => '03', 'patient_name' => 'An. Rizky Pratama', 'doctor_name' => 'dr. Ratna W, Sp.A', 'status' => 'terisi'],
+                    ['bed_number' => '04', 'patient_name' => 'Ny. Dewi Kurniawati', 'doctor_name' => 'dr. Iskandar, Sp.OG', 'status' => 'terisi'],
+                    ['bed_number' => '05', 'patient_name' => 'Tn. Agus Gunawan', 'doctor_name' => 'dr. Bambang P, Sp.PD', 'status' => 'terisi'],
+                    ['bed_number' => '06', 'patient_name' => 'Ny. Rina Wati', 'doctor_name' => 'dr. Hendra S, Sp.B', 'status' => 'terisi'],
+                ]),
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -70,11 +108,22 @@ class InpatientRoomSeeder extends Seeder
                 'bed_total' => 10,
                 'bed_occupied' => 4,
                 'bed_available' => 6,
+                'patients' => json_encode([
+                    ['bed_number' => '01', 'patient_name' => 'Tn. Budi Santoso', 'doctor_name' => 'dr. Bambang P, Sp.PD', 'status' => 'terisi'],
+                    ['bed_number' => '02', 'patient_name' => 'Ny. Siti Aminah', 'doctor_name' => 'dr. Hendra S, Sp.B', 'status' => 'terisi'],
+                    ['bed_number' => '03', 'patient_name' => 'An. Rizky Pratama', 'doctor_name' => 'dr. Ratna W, Sp.A', 'status' => 'terisi'],
+                    ['bed_number' => '04', 'patient_name' => 'Ny. Dewi Kurniawati', 'doctor_name' => 'dr. Iskandar, Sp.OG', 'status' => 'terisi'],
+                ]),
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
         ];
 
-        \Illuminate\Support\Facades\DB::table('inpatient_rooms')->insert($rooms);
+        foreach ($rooms as $room) {
+            \App\Models\InpatientRoom::updateOrCreate(
+                ['room_code' => $room['room_code']],
+                $room
+            );
+        }
     }
 }

@@ -22,5 +22,10 @@ class InpatientRoom extends Model
         'bed_total',
         'bed_occupied',
         'bed_available',
+        'patients',
+    ];
+
+    protected $casts = [
+        'patients' => 'array',
     ];
 }
