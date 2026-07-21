@@ -62,6 +62,31 @@ class DisplayApiTest extends TestCase
         ]);
     }
 
+    public function test_admin_can_create_display_device_with_ip_address()
+    {
+        $response = $this->actingAs($this->admin, 'sanctum')
+            ->postJson('/api/v1/displays', [
+                'display_id' => 'DSP-IP',
+                'name' => 'Armbian Monitor',
+                'ip_address' => '192.168.1.105',
+            ]);
+
+        $response->assertStatus(201)
+            ->assertJson([
+                'success' => true,
+                'data' => [
+                    'display_id' => 'DSP-IP',
+                    'name' => 'Armbian Monitor',
+                    'ip_address' => '192.168.1.105',
+                ]
+            ]);
+
+        $this->assertDatabaseHas('display_devices', [
+            'display_id' => 'DSP-IP',
+            'ip_address' => '192.168.1.105',
+        ]);
+    }
+
     public function test_operator_cannot_create_display_device()
     {
         $response = $this->actingAs($this->operator, 'sanctum')

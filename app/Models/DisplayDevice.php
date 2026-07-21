@@ -18,6 +18,7 @@ class DisplayDevice extends Model
     protected $fillable = [
         'display_id',
         'name',
+        'ip_address',
         'status',
         'last_heartbeat_at',
     ];

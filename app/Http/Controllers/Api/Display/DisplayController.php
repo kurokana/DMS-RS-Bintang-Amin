@@ -39,6 +39,7 @@ class DisplayController extends Controller
             $validated = $request->validate([
                 'display_id' => 'required|string|max:50',
                 'name' => 'required|string|max:255',
+                'ip_address' => 'nullable|string|max:45',
             ]);
 
             $device = $this->deviceService->createDevice($validated);
@@ -66,6 +67,7 @@ class DisplayController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'ip_address' => 'nullable|string|max:45',
         ]);
 
         $device = collect($this->deviceService->getAllDevices())->firstWhere('display_id', $id);

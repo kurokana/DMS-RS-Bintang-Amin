@@ -31,6 +31,7 @@ class DisplayDeviceService
         return DisplayDevice::create([
             'display_id' => $data['display_id'],
             'name' => $data['name'],
+            'ip_address' => $data['ip_address'] ?? null,
             'status' => 'offline', // initial status is offline
         ]);
     }
@@ -41,9 +42,11 @@ class DisplayDeviceService
     public function updateDevice(string $displayId, array $data): DisplayDevice
     {
         $device = DisplayDevice::where('display_id', $displayId)->firstOrFail();
-        $device->update([
-            'name' => $data['name'],
-        ]);
+        $updateData = ['name' => $data['name']];
+        if (array_key_exists('ip_address', $data)) {
+            $updateData['ip_address'] = $data['ip_address'];
+        }
+        $device->update($updateData);
         
         return $device;
     }
