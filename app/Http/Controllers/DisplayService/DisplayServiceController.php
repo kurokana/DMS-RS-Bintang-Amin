@@ -122,7 +122,49 @@ class DisplayServiceController extends Controller
         } elseif ($mapping->target_type === 'inpatient_room') {
             $inpatientRoom = InpatientRoom::find($mapping->target_id);
             if ($inpatientRoom) {
+                $samplePatients = [
+                    [
+                        'bed_number' => '01',
+                        'patient_name' => 'Tn. Budi Santoso',
+                        'doctor_name' => 'dr. Bambang P, Sp.PD',
+                        'status' => 'terisi',
+                    ],
+                    [
+                        'bed_number' => '02',
+                        'patient_name' => 'Ny. Siti Aminah',
+                        'doctor_name' => 'dr. Hendra S, Sp.B',
+                        'status' => 'terisi',
+                    ],
+                    [
+                        'bed_number' => '03',
+                        'patient_name' => 'An. Rizky Pratama',
+                        'doctor_name' => 'dr. Ratna W, Sp.A',
+                        'status' => 'terisi',
+                    ],
+                    [
+                        'bed_number' => '04',
+                        'patient_name' => 'Ny. Dewi Kurniawati',
+                        'doctor_name' => 'dr. Iskandar, Sp.OG',
+                        'status' => 'terisi',
+                    ],
+                    [
+                        'bed_number' => '05',
+                        'patient_name' => 'Tn. Agus Gunawan',
+                        'doctor_name' => 'dr. Bambang P, Sp.PD',
+                        'status' => 'terisi',
+                    ],
+                    [
+                        'bed_number' => '06',
+                        'patient_name' => 'Ny. Rina Wati',
+                        'doctor_name' => 'dr. Hendra S, Sp.B',
+                        'status' => 'terisi',
+                    ],
+                ];
+
+                $activePatients = array_slice($samplePatients, 0, $inpatientRoom->bed_occupied);
+
                 $stateData['content'] = [
+                    'id' => $inpatientRoom->id,
                     'room_code' => $inpatientRoom->room_code,
                     'name' => $inpatientRoom->name,
                     'floor' => $inpatientRoom->floor,
@@ -130,6 +172,7 @@ class DisplayServiceController extends Controller
                     'bed_total' => $inpatientRoom->bed_total,
                     'bed_occupied' => $inpatientRoom->bed_occupied,
                     'bed_available' => $inpatientRoom->bed_available,
+                    'patients' => $activePatients,
                     'updated_at' => $inpatientRoom->updated_at?->toIso8601String(),
                 ];
             }

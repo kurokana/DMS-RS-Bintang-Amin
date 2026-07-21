@@ -24,5 +24,9 @@ class DatabaseSeeder extends Seeder
             'password' => 'password',
             'role' => 'operator',
         ]);
+
+        $this->call([
+            InpatientRoomSeeder::class,
+        ]);
     }
 }
