@@ -35,4 +35,14 @@ return [
         ],
     ],
 
+    'simrs' => [
+        'driver' => env('SIMRS_DRIVER', 'local'),
+        'version' => env('SIMRS_API_VERSION', 'v1'),
+        'base_url' => env('SIMRS_API_BASE_URL', 'http://127.0.0.1:9000'),
+        'api_key' => env('SIMRS_API_KEY', ''),
+        'timeout' => env('SIMRS_API_TIMEOUT', 5),
+        'retry' => env('SIMRS_API_RETRY', 2),
+        'recovery_cooldown' => env('SIMRS_RECOVERY_COOLDOWN', 30),
+    ],
+
 ];

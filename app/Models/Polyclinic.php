@@ -18,6 +18,10 @@ class Polyclinic extends Model
     protected $fillable = [
         'code',
         'name',
+        'ruangan_code',
+        'simrs_code',
+        'bpjs_code',
+        'display_name',
     ];
 
     public function doctors(): HasMany

@@ -127,6 +127,13 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
+        'simrs' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/simrs.log'),
+            'level' => 'debug',
+            'replace_placeholders' => true,
+        ],
+
     ],
 
 ];

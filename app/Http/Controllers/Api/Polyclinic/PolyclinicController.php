@@ -24,10 +24,16 @@ class PolyclinicController extends Controller
                 'id' => $poly->id,
                 'code' => $poly->code,
                 'name' => $poly->name,
+                'ruangan_code' => $poly->ruangan_code,
+                'simrs_code' => $poly->simrs_code,
+                'bpjs_code' => $poly->bpjs_code,
+                'display_name' => $poly->display_name,
                 'doctors_count' => $poly->doctors->count(),
                 'doctors' => $poly->doctors->map(fn($doc) => [
                     'id' => $doc->id,
                     'name' => $doc->name,
+                    'doctor_code' => $doc->doctor_code,
+                    'master_doctor_uuid' => $doc->master_doctor_uuid,
                     'photo_url' => $doc->photo_url,
                     'specialty' => $doc->specialty,
                     'is_active' => $doc->is_active,
@@ -46,6 +52,10 @@ class PolyclinicController extends Controller
         $validated = $request->validate([
             'code' => 'required|string|max:50|unique:polyclinics,code',
             'name' => 'required|string|max:255',
+            'ruangan_code' => 'nullable|string|max:50',
+            'simrs_code' => 'nullable|string|max:50',
+            'bpjs_code' => 'nullable|string|max:50',
+            'display_name' => 'nullable|string|max:255',
         ]);
 
         $validated['code'] = strtoupper($validated['code']);
@@ -58,6 +68,7 @@ class PolyclinicController extends Controller
                 'id' => $polyclinic->id,
                 'code' => $polyclinic->code,
                 'name' => $polyclinic->name,
+                'ruangan_code' => $polyclinic->ruangan_code,
             ],
         ], 201);
     }

@@ -16,6 +16,10 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('code')->unique();   // e.g. "POLI-UMUM"
             $table->string('name');              // e.g. "Poliklinik Umum"
+            $table->string('ruangan_code', 50)->nullable()->index();
+            $table->string('simrs_code', 50)->nullable()->index();
+            $table->string('bpjs_code', 50)->nullable()->index();
+            $table->string('display_name')->nullable();
             $table->timestamps();
         });
 
@@ -23,6 +27,8 @@ return new class extends Migration
         Schema::create('polyclinic_doctors', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('polyclinic_id');
+            $table->string('doctor_code', 50)->nullable()->index();
+            $table->uuid('master_doctor_uuid')->nullable()->index();
             $table->string('name');
             $table->string('photo_path')->nullable();
             $table->string('specialty')->nullable();

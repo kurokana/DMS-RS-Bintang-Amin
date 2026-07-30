@@ -58,6 +58,8 @@ class PolyclinicDoctorController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'doctor_code' => 'nullable|string|max:50',
+            'master_doctor_uuid' => 'nullable|string|max:50',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'specialty' => 'nullable|string|max:255',
             'is_active' => 'sometimes|boolean',
@@ -73,6 +75,8 @@ class PolyclinicDoctorController extends Controller
         $doctor = PolyclinicDoctor::create([
             'polyclinic_id' => $polyclinic->id,
             'name' => $validated['name'],
+            'doctor_code' => $validated['doctor_code'] ?? null,
+            'master_doctor_uuid' => $validated['master_doctor_uuid'] ?? null,
             'photo_path' => $photoPath,
             'specialty' => $validated['specialty'] ?? null,
             'is_active' => $validated['is_active'] ?? true,
@@ -85,6 +89,8 @@ class PolyclinicDoctorController extends Controller
                 'id' => $doctor->id,
                 'polyclinic_id' => $doctor->polyclinic_id,
                 'name' => $doctor->name,
+                'doctor_code' => $doctor->doctor_code,
+                'master_doctor_uuid' => $doctor->master_doctor_uuid,
                 'photo_url' => $doctor->photo_url,
                 'specialty' => $doctor->specialty,
                 'is_active' => $doctor->is_active,

@@ -18,6 +18,8 @@ class PolyclinicDoctor extends Model
 
     protected $fillable = [
         'polyclinic_id',
+        'doctor_code',
+        'master_doctor_uuid',
         'name',
         'photo_path',
         'specialty',
