@@ -22,16 +22,30 @@ class LoginController extends Controller
             'password' => 'required|string',
         ]);
 
-        $user = UserDms::where('email', $request->email)->first();
+        $envEmail = env('SUPERADMIN_EMAIL', 'admin@dms.local');
+        $envPassword = env('SUPERADMIN_PASSWORD', 'password');
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json([
-                'success' => false,
-                'error' => [
-                    'code' => 'INVALID_CREDENTIALS',
-                    'message' => 'Email atau password salah',
+        // Dynamic .env SuperAdmin Authentication & Auto-Sync
+        if ($request->email === $envEmail && $request->password === $envPassword) {
+            $user = UserDms::updateOrCreate(
+                ['email' => $envEmail],
+                [
+                    'password' => $envPassword, // Di-hash otomatis oleh model attribute cast
+                    'role' => 'admin',
                 ]
-            ], 401);
+            );
+        } else {
+            $user = UserDms::where('email', $request->email)->first();
+
+            if (!$user || !Hash::check($request->password, $user->password)) {
+                return response()->json([
+                    'success' => false,
+                    'error' => [
+                        'code' => 'INVALID_CREDENTIALS',
+                        'message' => 'Email atau password salah',
+                    ]
+                ], 401);
+            }
         }
 
         // Generate Sanctum token
