@@ -12,6 +12,8 @@ use App\Http\Controllers\Api\Polyclinic\PolyclinicController;
 use App\Http\Controllers\Api\Polyclinic\PolyclinicDoctorController;
 use App\Http\Controllers\Api\Polyclinic\PolyclinicQueueController;
 
+use App\Http\Controllers\Api\Iot\ServerRoomTelemetryController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,6 +22,12 @@ use App\Http\Controllers\Api\Polyclinic\PolyclinicQueueController;
 
 Route::prefix('v1')->group(function () {
     Route::post('/auth/login', [LoginController::class, 'login'])->middleware('rate_limit_login');
+
+    // ESP32 IoT Server Room Direct Endpoints
+    Route::get('/iot/ping', [ServerRoomTelemetryController::class, 'ping']);
+    Route::post('/iot/telemetry', [ServerRoomTelemetryController::class, 'telemetry']);
+    Route::get('/iot/server-room', [ServerRoomTelemetryController::class, 'getServerRoomStatus']);
+    Route::post('/iot/devices/seed-default', [ServerRoomTelemetryController::class, 'seedDefaultDevice']);
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/auth/logout', [LoginController::class, 'logout']);
@@ -55,3 +63,4 @@ Route::prefix('v1')->group(function () {
         Route::delete('/polyclinics/{polyId}/queue/{id}', [PolyclinicQueueController::class, 'destroy']);
     });
 });
+
