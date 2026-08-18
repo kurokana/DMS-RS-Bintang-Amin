@@ -113,6 +113,9 @@ class ServerRoomTelemetryController extends Controller
 
         Log::info("IoT Ingestion Success [{$device->serial_number}]: Temp={$validated['temperature']}C, Hum={$validated['humidity']}%, RSSI={$validated['rssi']}dBm");
 
+        // 5. Evaluate thresholds and trigger instant alert push if critical
+        \App\Services\ServerRoomAlertService::checkAndSendAlert($device, $reading);
+
         return response()->json([
             'status'      => 'success',
             'message'     => 'Telemetry recorded successfully',
